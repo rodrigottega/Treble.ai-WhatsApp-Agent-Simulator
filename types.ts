@@ -13,6 +13,7 @@ export interface AgentConfig {
   color: string;
   welcomeMessage: string;
   systemInstruction: string;
+  mockResponse: string;
 }
 
 export interface Message {

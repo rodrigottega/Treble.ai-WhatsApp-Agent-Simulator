@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { RiWhatsappLine, RiCheckFill, RiArrowRightLine, RiAddLine } from '@remixicon/react';
 import { AGENTS } from './constants';
 import { AgentType, Message } from './types';
-import { initializeChat, sendMessageToGemini } from './services/geminiService';
 import PhoneSimulator from './components/PhoneSimulator';
 import AgentSelector from './components/AgentSelector';
 
@@ -16,7 +15,7 @@ const App: React.FC = () => {
 
   // Initialize chat when agent changes
   useEffect(() => {
-    initializeChat(currentAgent.systemInstruction);
+    // Reset messages when agent changes
     setMessages([
       {
         id: 'welcome-' + Date.now(),
@@ -41,20 +40,17 @@ const App: React.FC = () => {
     setInputText('');
     setIsThinking(true);
 
-    try {
-      const responseText = await sendMessageToGemini(inputText);
+    // Simulate AI delay and generic response
+    setTimeout(() => {
       const modelMsg: Message = {
         id: 'model-' + Date.now(),
         role: 'model',
-        text: responseText,
+        text: currentAgent.mockResponse,
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, modelMsg]);
-    } catch (error) {
-      console.error("Failed to get response", error);
-    } finally {
       setIsThinking(false);
-    }
+    }, 2000); // 2 second delay to show thinking indicator
   };
 
   return (
